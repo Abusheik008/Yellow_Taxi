@@ -1,0 +1,21 @@
+h1 {
+    font-size: 36px;
+  }
+  
+  .container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  
+  .metric {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .metric h2 {
+    margin-top: 0;
+  }
+  

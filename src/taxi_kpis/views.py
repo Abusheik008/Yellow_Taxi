@@ -57,14 +57,39 @@ def compute(request):
 
 
 def dashboard(request):
-    # Get the data from JSON file
-    with open(r'D:\My Learnings\Yellow_taxi\kpis\data_json\20230510_yellow_taxi_kpis.json') as f:
-        data = json.load(f)
+    # Define the directory where the JSON files are stored
+    json_dir = r'D:\My Learnings\Yellow_taxi\kpis\src\data_json'
 
-    # Pass the data to the template
+    # Initialize variables to store aggregated metrics
+    total_avg_price_per_mile = 0
+    total_payment_type_counts = {"1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0}
+    total_custom_indicator = 0
+
+    # Iterate over all JSON files in the directory
+    for file_name in os.listdir(json_dir):
+        if file_name.endswith('.json'):
+            # Load the JSON data from the file
+            with open(os.path.join(json_dir, file_name)) as f:
+                data = json.load(f)
+
+            # Add the metrics from the current file to the running totals
+            total_avg_price_per_mile += data["average_price_per_mile"]
+            for payment_type, count in data["payment_type_counts"].items():
+                total_payment_type_counts[payment_type] += count
+            total_custom_indicator += data["custom_indicator"]
+
+    # Calculate the average metrics across all files
+    num_files = len([f for f in os.listdir(json_dir) if f.endswith('.json')])
+    avg_avg_price_per_mile = total_avg_price_per_mile / num_files
+    avg_payment_type_counts = {payment_type: count / num_files for payment_type, count in total_payment_type_counts.items()}
+    avg_custom_indicator = total_custom_indicator / num_files
+
+    # Render the template with the aggregated metrics
     context = {
-        'data': data,
+        'avg_price_per_mile': avg_avg_price_per_mile,
+        'payment_type_counts': avg_payment_type_counts,
+        'custom_indicator': avg_custom_indicator
     }
 
-    # Render the template with the context data
+    print(context,"----")
     return render(request, 'dashboard.html', context)

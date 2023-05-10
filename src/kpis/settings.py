@@ -28,6 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -55,7 +57,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [# Add your template directory here
-            BASE_DIR / r'D:\My Learnings\Yellow_taxi\kpis\templates'],
+            BASE_DIR / r'D:\My Learnings\Yellow_taxi\kpis\src\templates'],
             
         'APP_DIRS': True,
         'OPTIONS': {
