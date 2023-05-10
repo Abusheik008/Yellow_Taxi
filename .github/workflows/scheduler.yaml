@@ -26,8 +26,20 @@ jobs:
       - name: Run Django server
         working-directory: ./src
         run: |
-          python manage.py runserver
+          python manage.py runserver &
 
       - name: Send GET request
         run: |
-          curl http://127.0.0.1:8000/compute/
+          sleep 5s
+          response=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8000/compute/)
+          if [[ $response -eq 200 ]]; then
+            message="Metrics computed and stored"
+          else
+            message="Failed to compute metrics"
+          fi
+          current_date=$(date '+%Y-%m-%d %H:%M:%S')
+          git config --global user.email "abusheikabdulrahim2021@gmail.com"
+          git config --global user.name "Abusheik008"
+          git add .
+          git commit -m "Update metrics at ${current_date}: ${message}"
+          git push
