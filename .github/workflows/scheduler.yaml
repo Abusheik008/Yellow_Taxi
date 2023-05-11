@@ -24,6 +24,8 @@ jobs:
           docker build -t my-taxi-app .
         
       - name: Run Docker container
+        env:
+          GITHUB_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKENS}}
         run: |
           docker run -d -p 8000:8000 my-taxi-app
           sleep 5s
