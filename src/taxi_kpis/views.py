@@ -8,6 +8,12 @@ import pandas as pd
 from datetime import datetime
 
 def find_current_month():
+    """
+    Returns the current month in the format YYYY-MM.
+
+    Returns:
+        str: A string representing the current month in the format YYYY-MM.
+    """
     current_date = datetime.now()
     current_month_date = datetime(current_date.year, current_date.month, 1)
     month_year = current_month_date.strftime('%Y-%m')
@@ -15,9 +21,22 @@ def find_current_month():
     return month_year
 
 def compute(request):
+
+    """
+    Downloads the yellow taxi trip data for the current month, checks if the data is up-to-date,
+    computes metrics, and stores them in a JSON file.
+
+    Args:
+        request: A Django request object.
+
+    Returns:
+        HttpResponse: A Django HTTP response indicating if the data is up-to-date or if the
+                       metrics were computed and stored successfully.
+    """
+
     # Define the download URL
-    # month_year = find_current_month()
-    url = f'https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-02.parquet'
+    month_year = find_current_month()
+    url = f'https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_{month_year}.parquet'
 
     # Define the folder where the data will be stored
     folder_path = 'data'
@@ -57,6 +76,15 @@ def compute(request):
 
 
 def dashboard(request):
+    """
+    Renders a dashboard with aggregated metrics based on the data stored in JSON files.
+
+    Args:
+        request: A Django request object.
+
+    Returns:
+        HttpResponse: A Django HTTP response containing the rendered dashboard template.
+    """
     # Define the directory where the JSON files are stored
     json_dir = r'D:\My Learnings\Yellow_taxi\kpis\src\data_json'
 
