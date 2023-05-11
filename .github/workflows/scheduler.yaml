@@ -28,6 +28,7 @@ jobs:
           docker run -d -p 8000:8000 my-taxi-app
           sleep 5s
           response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/compute/)
+          sleep 100s
           if [[ $response -eq 200 ]]; then
             message="Metrics computed and stored"
             echo $message

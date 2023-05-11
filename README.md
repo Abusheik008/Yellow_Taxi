@@ -154,40 +154,41 @@ The second step sets up the Python environment for the runner, specifying the ve
         python-version: '3.8'
 
 
-### Install dependencies
 
+### Building Docker Image
 
+The fourth step starts the Docker Build in the ./src directory of the repository:
 
-    - name: Install dependencies
-        run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-
-
-### Run Django server
-
-The fourth step starts the Django development server in the ./src directory of the repository:
-
-    - name: Run Django server
+    - name: Build Docker image
         working-directory: ./src
         run: |
-        python manage.py runserver 
+          docker build -t my-taxi-app . 
 
 
-### Send GET request
+### Running Docker Container
 
-The fifth step sends a GET request to the http://127.0.0.1:8000/compute/ URL, which triggers the computation of the metrics by the Django application:
+The fifth step run an docker container which send get request to the http://localhost:8000/compute/ URL, which triggers the computation of the metrics by the Django application:
 
 
-    - name: Send GET request
+    - name: Run Docker container
         run: |
-        sleep 5s
-        response=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8000/compute/)
-        if [[ $response -eq 200 ]]; then
+          docker run -d -p 8000:8000 my-taxi-app
+          sleep 5s
+          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/compute/)
+          sleep 100s
+          if [[ $response -eq 200 ]]; then
             message="Metrics computed and stored"
-        else
+            echo $message
+          else
             message="Failed to compute metrics"
-        fi
+            echo $message
+          fi
+          current_date=$(date '+%Y-%m-%d %H:%M:%S')
+          git config --global user.email "abusheikabdulrahim2021@gmail.com"
+          git config --global user.name "Abusheik008"
+          git add .
+          git commit -m "Update metrics at ${current_date}: ${message}"
+          git push
 
 
 
