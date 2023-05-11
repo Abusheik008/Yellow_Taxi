@@ -45,5 +45,7 @@ jobs:
           git config --global user.name "Abusheik008"
           git add .
           git commit -m "Update metrics at ${current_date}: ${message}"
-          git push
+          git remote add origin https://github.com/Abusheik008/Yellow_Taxi.git
+          git pull origin master --allow-unrelated-histories
+          git push origin master
 
