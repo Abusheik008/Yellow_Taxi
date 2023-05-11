@@ -43,7 +43,7 @@ jobs:
           git config --global user.email "abusheikabdulrahim2021@gmail.com"
           git config --global user.name "Abusheik008"
           git add .
-          git commit -m "Update metrics at ${current_date}: ${message}"
+          git commit -m "Updated metrics at ${current_date}: ${message}"
           git push origin master
         env:
           GITHUB_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKENS}}
