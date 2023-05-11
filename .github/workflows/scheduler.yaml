@@ -18,22 +18,15 @@ jobs:
         with:
           python-version: '3.8'
 
-      - name: Install dependencies
-        working-directory: ./src
+      - name: Build Docker image
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Run Django server
-        working-directory: ./src
+          docker build -t my-taxi-app .
+        
+      - name: Run Docker container
         run: |
-          python manage.py runserver
-          echo "Django server started at http://127.0.0.1:8000/" 
-
-      - name: Send GET request
-        run: |
+          docker run -d -p 8000:8000 my-taxi-app
           sleep 5s
-          response=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8000/compute/)
+          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/compute/)
           if [[ $response -eq 200 ]]; then
             message="Metrics computed and stored"
           else
