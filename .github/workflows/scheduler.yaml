@@ -30,8 +30,10 @@ jobs:
           response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/compute/)
           if [[ $response -eq 200 ]]; then
             message="Metrics computed and stored"
+            echo $message
           else
             message="Failed to compute metrics"
+            echo $message
           fi
           current_date=$(date '+%Y-%m-%d %H:%M:%S')
           git config --global user.email "abusheikabdulrahim2021@gmail.com"
