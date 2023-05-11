@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.shortcuts import render
 from taxi_kpis.analytics import compute_metrics
 import os
@@ -61,18 +61,25 @@ def compute(request):
             return HttpResponse('Data is up to date')
         else:
             # Data is outdated, download the new file
+            print(";;;;;",url, path)
             os.remove(path)  # remove the old file
             urllib.request.urlretrieve(url, path)
             df = pd.read_parquet(path)
     else:
         # File for current month doesn't exist, download it
-        urllib.request.urlretrieve(url, path)
-        df = pd.read_parquet(path)
-
-    # Compute the metrics and store them in a JSON file
-    compute_metrics(df)
+        try:
+            urllib.request.urlretrieve(url, path)
+            df = pd.read_parquet(path)
+            # Compute the metrics and store them in a JSON file
+            compute_metrics(df)
+        except:
+            print(f"This Month data is not available {month_year}")        
 
     return HttpResponse('Metrics computed and stored')
+
+def home(request):
+    return render(request, 'dashboard.html')
+
 
 
 def dashboard(request):
@@ -86,11 +93,11 @@ def dashboard(request):
         HttpResponse: A Django HTTP response containing the rendered dashboard template.
     """
     # Define the directory where the JSON files are stored
-    json_dir = r'D:\My Learnings\Yellow_taxi\kpis\src\data_json'
+    json_dir = 'taxi_kpis/data_json'
 
     # Initialize variables to store aggregated metrics
     total_avg_price_per_mile = 0
-    total_payment_type_counts = {"1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0}
+    total_payment_type_counts = {"1": 0, "2": 0, "3": 0, "4": 0}
     total_custom_indicator = 0
 
     # Iterate over all JSON files in the directory
@@ -120,4 +127,5 @@ def dashboard(request):
     }
 
     print(context,"----")
-    return render(request, 'dashboard.html', context)
+
+    return JsonResponse(context)

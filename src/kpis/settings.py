@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'taxi_kpis'
 ]
 
 MIDDLEWARE = [
@@ -56,9 +58,7 @@ ROOT_URLCONF = 'kpis.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [# Add your template directory here
-            BASE_DIR / r'D:\My Learnings\Yellow_taxi\kpis\src\templates'],
-            
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,6 +122,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "taxi_kpis", "static"), '/var/www/static/', ]
+
+MEDIA_URL = 'taxi_kpis/data/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'taxi_kpis/data/')
+
+MEDIA_URL_DATA = '/data/'
+MEDIA_ROOT_DATA = os.path.join(BASE_DIR, 'data')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

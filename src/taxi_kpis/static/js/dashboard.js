@@ -1,7 +1,8 @@
 fetch('/dashboard')
     .then(response => response.json())
     .then(data => {
-        document.getElementById('avg_price').innerHTML = data.average_price_per_mile.toFixed(2);
+        console.log(data)
+        document.getElementById('avg_price').innerHTML = data['avg_price_per_mile'];
         document.getElementById('custom_indicator').innerHTML = data.custom_indicator.toFixed(2);
 
         let paymentTypes = '';
@@ -11,3 +12,5 @@ fetch('/dashboard')
         document.getElementById('payment_types').innerHTML = paymentTypes;
     })
     .catch(error => console.error(error));
+
+
