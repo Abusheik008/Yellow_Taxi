@@ -19,6 +19,7 @@ jobs:
           python-version: '3.8'
 
       - name: Build Docker image
+        working-directory: ./src
         run: |
           docker build -t my-taxi-app .
         
