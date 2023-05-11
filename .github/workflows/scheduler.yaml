@@ -27,7 +27,8 @@ jobs:
       - name: Run Django server
         working-directory: ./src
         run: |
-          python manage.py runserver 
+          python manage.py runserver
+          echo "Django server started at http://127.0.0.1:8000/" 
 
       - name: Send GET request
         run: |
