@@ -6,6 +6,7 @@ import sys
 
 def main():
     """Run administrative tasks."""
+    """Ensure you have all the requirments before running """
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'kpis.settings')
     try:
         from django.core.management import execute_from_command_line
